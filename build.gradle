@@ -1,0 +1,31 @@
+plugins {
+    id 'application'
+    id 'org.jetbrains.kotlin.jvm' version '1.5.21'
+}
+
+group "kz.aspan"
+version "0.0.1"
+mainClassName = "kz.aspan.ApplicationKt"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "io.ktor:ktor-server-core:$ktor_version"
+    implementation "io.ktor:ktor-server-netty:$ktor_version"
+    implementation "ch.qos.logback:logback-classic:$logback_version"
+    testImplementation "io.ktor:ktor-server-tests:$ktor_version"
+    testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+
+    implementation "io.ktor:ktor-html-builder:$ktor_version"
+    implementation "org.jetbrains.kotlin-wrappers:kotlin-css:$kotlin_css_version"
+    implementation "io.ktor:ktor-auth:$ktor_version"
+    implementation "io.ktor:ktor-gson:$ktor_version"
+    implementation 'org.litote.kmongo:kmongo:4.2.8'
+    implementation 'org.litote.kmongo:kmongo-coroutine:4.2.8'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1-native-mt'
+    implementation 'commons-codec:commons-codec:1.15'
+    implementation "io.ktor:ktor-network-tls:$ktor_version"
+    implementation "io.ktor:ktor-freemarker:$ktor_version"
+}
