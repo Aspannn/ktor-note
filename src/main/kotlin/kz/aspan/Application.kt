@@ -13,16 +13,20 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kz.aspan.data.collections.User
 import kz.aspan.data.registerUser
+import kz.aspan.routes.registerRoute
 
 fun main() {
     embeddedServer(Netty, port = 8080, host = "0.0.0.0") {
         install(DefaultHeaders)
         install(CallLogging)
-        install(Routing)
+        install(Routing) {
+            registerRoute()
+        }
         install(ContentNegotiation) {
             gson {
                 setPrettyPrinting()
             }
         }
+
     }.start(wait = true)
 }
