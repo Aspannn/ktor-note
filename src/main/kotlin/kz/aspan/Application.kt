@@ -8,11 +8,7 @@ import io.ktor.gson.gson
 import io.ktor.routing.Routing
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kz.aspan.data.collections.User
-import kz.aspan.data.registerUser
+import kz.aspan.routes.loginRoute
 import kz.aspan.routes.registerRoute
 
 fun main() {
@@ -21,6 +17,7 @@ fun main() {
         install(CallLogging)
         install(Routing) {
             registerRoute()
+            loginRoute()
         }
         install(ContentNegotiation) {
             gson {
