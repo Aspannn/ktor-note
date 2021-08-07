@@ -13,16 +13,13 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import kz.aspan.data.checkPasswordForEmail
 import kz.aspan.routes.loginRoute
+import kz.aspan.routes.noteRoutes
 import kz.aspan.routes.registerRoute
 
 fun main() {
     embeddedServer(Netty, port = 8080, host = "0.0.0.0") {
         install(DefaultHeaders)
         install(CallLogging)
-        install(Routing) {
-            registerRoute()
-            loginRoute()
-        }
         install(ContentNegotiation) {
             gson {
                 setPrettyPrinting()
@@ -30,6 +27,11 @@ fun main() {
         }
         install(Authentication) {
             configureAuth()
+        }
+        install(Routing) {
+            registerRoute()
+            loginRoute()
+            noteRoutes()
         }
     }.start(wait = true)
 }
