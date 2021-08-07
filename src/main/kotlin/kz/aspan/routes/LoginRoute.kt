@@ -11,7 +11,7 @@ import kz.aspan.data.requests.AccountRequest
 import kz.aspan.data.responses.SimpleResponse
 
 fun Route.loginRoute() {
-    route("/route") {
+    route("/login") {
         post {
             val request = try {
                 call.receive<AccountRequest>()
