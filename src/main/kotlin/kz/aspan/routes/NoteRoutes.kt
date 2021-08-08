@@ -13,10 +13,15 @@ import io.ktor.routing.Route
 import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.route
+import kz.aspan.data.addOwnerToNote
+import kz.aspan.data.checkIfUserExists
 import kz.aspan.data.collections.Note
 import kz.aspan.data.deleteNoteForUser
 import kz.aspan.data.getNotesForUser
+import kz.aspan.data.isOwnerOfNote
+import kz.aspan.data.requests.AddOwnerRequest
 import kz.aspan.data.requests.DeleteNoteRequest
+import kz.aspan.data.responses.SimpleResponse
 import kz.aspan.data.saveNotes
 
 fun Route.noteRoutes() {
@@ -26,6 +31,35 @@ fun Route.noteRoutes() {
                 val email = call.principal<UserIdPrincipal>()!!.name
                 val notes = getNotesForUser(email)
                 call.respond(OK, notes)
+            }
+        }
+    }
+
+    route("/addOwnerToNote") {
+        authenticate {
+            post {
+                val request = try {
+                    call.receive<AddOwnerRequest>()
+                } catch (e: ConcurrentModificationException) {
+                    call.respond(BadRequest)
+                    return@post
+                }
+
+                if (!checkIfUserExists(request.owner)) {
+                    call.respond(OK, SimpleResponse(false, "No user with this E-Mail exists"))
+                    return@post
+                }
+
+                if (isOwnerOfNote(request.noteID, request.owner)) {
+                    call.respond(OK, SimpleResponse(false, "This user is already an owner of this note"))
+                    return@post
+                }
+
+                if (addOwnerToNote(request.noteID, request.owner)) {
+                    call.respond(OK, SimpleResponse(true, "${request.owner} can now see this note"))
+                } else {
+                    call.respond(Conflict)
+                }
             }
         }
     }
